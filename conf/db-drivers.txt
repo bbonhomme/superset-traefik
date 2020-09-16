@@ -1,0 +1,113 @@
+# Dependencies for database driver requiered to be install to establish a connection
+# Just uncomment the on you need (remove the '###', other lines are just comments)
+
+#Amazon Athena
+#awsathena+rest://{aws_access_key_id}:{aws_secret_access_key}@athena.{region_name}.amazonaws.com/{
+###PyAthenaJDBC>1.0.9
+###PyAthena>1.2.0	
+
+#Amazon Redshift
+#redshift+psycopg2://<userName>:<DBPassword>@<AWS End Point>:5439/<Database Name>
+###sqlalchemy-redshift	
+
+#Apache Drill	
+#drill+sadrill:// For JDBC drill+jdbc://
+###sqlalchemy-drill	
+
+#Apache Druid	
+#druid://<User>:<password>@<Host>:<Port-default-9088>/druid/v2/sql
+###pydruid	
+
+#Apache Hive
+#hive://hive@{hostname}:{port}/{database}
+###pyhive	
+
+#Apache Impala
+#impala://{hostname}:{port}/{database}
+###impala	
+
+#Apache Kylin	
+#kylin://<username>:<password>@<hostname>:<port>/<project>?<param1>=<value1>&<param2>=<value2>
+###kylinpy	
+
+#Apache Pinot
+#pinot+http://CONTROLLER:5436/ query?server=http://CONTROLLER:5983/
+###pinotdb	
+
+#Apache Spark SQL	
+#hive://hive@{hostname}:{port}/{database}
+###pyhive	
+
+#Azure MS SQL		
+#mssql+pymssql://UserName@presetSQL:TestPassword@presetSQL.database.windows.net:1433/TestSchema
+
+#Big Query	
+#bigquery://{project_id}
+###pybigquery	
+
+#ClickHouse	
+#clickhouse://{username}:{password}@{hostname}:{port}/{database}
+###sqlalchemy-clickhouse	
+
+#CockroachDB	
+#cockroachdb://root@{hostname}:{port}/{database}?sslmode=disable
+###cockroachdb	
+
+#Dremio	
+#dremio://user:pwd@host:31010/
+###sqlalchemy_dremio	
+
+#Elasticsearch	
+#elasticsearch+http://{user}:{password}@{host}:9200/
+###sqlalchemy-exasol	
+
+#Exasol	
+#exa+pyodbc://{username}:{password}@{hostname}:{port}/my_schema?CONNECTIONLCALL=en_US.UTF-8&driver=EXAODBC
+###sqlalchemy-exasol	
+
+#Google Sheets	
+#gsheets://
+###gsheetsdb	
+
+#IBM Db2	
+#db2+ibm_db://
+###ibm_db_sa	
+
+#MySQL	
+#mysql://<UserName>:<DBPassword>@<Database Host>/<Database Name>
+###mysqlclient	
+
+#Oracle	
+#oracle://
+###cx_Oracle	
+
+#PostgreSQL	
+#postgresql:://<UserName>:<DBPassword>@<Database Host>/<Database Name>
+psycopg2	
+
+#Presto	
+#presto://
+###pyhive	
+
+#SAP Hana	
+#hana://{username}:{password}@{host}:{port}
+###hdbcli sqlalchemy-hana or pip install apache-superset[hana]	
+
+#Snowflake	
+#ssnowflake://{user}:{password}@{account}.{region}/{database}?role={role}&warehouse={warehouse}
+###snowflake-sqlalchemy	
+
+#SQLite		
+#sqlite://
+
+#SQL Server	
+#mssql://
+###pymssql
+
+#Teradata
+#teradata://{user}:{password}@{host}
+###sqlalchemy-teradata	
+
+#Vertica	
+#vertica+vertica_python://<UserName>:<DBPassword>@<Database Host>/<Database Name>
+###sqlalchemy-vertica-python	

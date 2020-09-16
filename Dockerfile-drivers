@@ -1,0 +1,8 @@
+FROM preset/superset:latest
+
+USER root
+
+COPY conf/db-drivers.txt /app/requirements/
+RUN pip install -r /app/requirements/db-drivers.txt
+
+USER superset

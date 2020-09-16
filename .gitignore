@@ -15,3 +15,8 @@
 !.vscode/extensions.json
 *.code-workspace
 .history
+
+
+# Python
+__pycache__
+*.pyc

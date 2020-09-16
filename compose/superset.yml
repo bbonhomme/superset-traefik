@@ -1,0 +1,90 @@
+### PATH_DATA=/Users/admin/Documents/Install/data docker-compose --file compose/superset.yml up -d
+
+x-superset-build: &superset-build
+  context: ./../
+  dockerfile: Dockerfile-drivers
+
+version: "3.7"
+services:
+  redis:
+    image: redis:3.2
+    container_name: superset_cache
+    restart: unless-stopped
+    env_file: ../conf/.env
+    ports:
+      - "6379:6379"
+    volumes:
+      - ${PATH_DATA}:/data
+    networks:
+      - supernet
+
+  db:
+    image: postgres:latest
+    env_file: ../conf/.env
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${PATH_DATA}:/var/lib/postgresql/data
+    networks:
+      - supernet
+
+  superset-init:
+    build: *superset-build
+    env_file: ../conf/.env
+    command: 
+      - "/app/init.sh"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ../conf/superset_config.py:/app/pythonpath/superset_config.py
+      - ../conf/init.sh:/app/init.sh
+    networks:
+      - supernet
+
+  superset:
+    build: *superset-build
+    restart: always
+    env_file: ../conf/.env
+    command: ["gunicorn", "--bind", "0.0.0.0:8088", "--workers", "10", "--worker-class", "gthread", "--threads" ,"20", "--timeout" ,"120", "--limit-request-line" ,"0"  ,"--limit-request-field_size",  "0", "superset.app:create_app()"]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-net"
+      - "traefik.http.routers.superset.rule=Host(`${URL_SUPERSET:-superset.localhost}`)"
+      - "traefik.http.routers.superset.tls=true"
+      - "traefik.http.routers.superset.tls.certresolver=le"
+      - "traefik.http.routers.superset.entrypoints=websecure"
+      - "traefik.http.middlewares.superset-redirect-web-secure.redirectscheme.scheme=https"
+      - "traefik.http.routers.superset-web.middlewares=superset-redirect-web-secure"        
+      - "traefik.http.routers.superset-web.rule=Host(`${URL_SUPERSET}`)"
+      - "traefik.http.routers.superset-web.entrypoints=web"
+    # Headers
+      - "traefik.http.routers.superset.middlewares=SecHeader@file"
+      - "traefik.http.routers.superset-web.middlewares=SecHeader@file"
+    ports:
+      - "8088:8088"
+    depends_on:
+      - db
+      - redis
+      - superset-init
+    volumes:
+      - ../conf/superset_config.py:/app/pythonpath/superset_config.py
+      - ../conf/init.sh:/app/init.sh
+    networks:
+      - supernet
+      - traefik
+    
+
+volumes:
+  db:
+    external: false
+  redis:
+    external: false
+networks:
+  supernet:
+    external: false
+  traefik:
+    external: true
+    name: traefik-net
+    
